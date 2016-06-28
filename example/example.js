@@ -1,9 +1,7 @@
 var shell = require("gl-now")()
 var createFBO = require("../fbo.js")
 var glslify = require("glslify")
-var ndarray = require("ndarray")
-var fill = require("ndarray-fill")
-var fillScreen = require("a-big-triangle")
+var fillScreen = require("@lfdoherty/fast-big-triangle")
 
 var createUpdateShader = glslify({
   vertex: "\
@@ -68,14 +66,23 @@ shell.on("gl-init", function() {
   state = [ createFBO(gl, [512, 512]), createFBO(gl, [512, 512]) ]
   
   //Initialize state buffer
-  var initial_conditions = ndarray(new Uint8Array(512*512*4), [512, 512, 4])
-  fill(initial_conditions, function(x,y,c) {
+  var initial_conditions = new Uint8Array(512*512*4);//, [512, 512, 4])
+  /*fill(initial_conditions, function(x,y,c) {
     if(c === 3) {
       return 255
     }
     return Math.random() > 0.9 ? 255 : 0
-  })
-  state[0].color[0].setPixels(initial_conditions)
+  })*/
+  let i=0;
+  for(let x=0;x<512;++x){
+    for(let y=0;y<512;++y){
+      initial_conditions[i++] = Math.random() > 0.9 ? 255 : 0
+      initial_conditions[i++] = Math.random() > 0.9 ? 255 : 0
+      initial_conditions[i++] = Math.random() > 0.9 ? 255 : 0
+      initial_conditions[i++] = 255
+    }
+  }
+  state[0].color[0].setData(initial_conditions)
   
   //Set up vertex pointers
   drawShader.attributes.position.location = updateShader.attributes.position.location = 0

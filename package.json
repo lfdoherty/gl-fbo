@@ -1,25 +1,24 @@
 {
-  "name": "gl-fbo",
-  "version": "2.0.5",
+  "name": "@lfdoherty/gl-fbo",
+  "version": "2.0.6",
   "description": "Frame buffer object wrapper for WebGL",
   "main": "fbo.js",
   "dependencies": {
-    "gl-texture2d": "^2.0.0"
+    "@lfdoherty/gl-texture2d": "^3.0.0"
   },
   "devDependencies": {
+    "@lfdoherty/fast-big-triangle": "*",
+    "beefy": "^2.1.8",
     "gl-now": "^1.3.1",
-    "ndarray": "^1.0.15",
-    "ndarray-fill": "^1.0.1",
-    "glslify": "^1.4.0",
-    "a-big-triangle": "0.0.0"
+    "glslify": "^1.4.0"
   },
   "scripts": {
     "test": "tap test/*.js",
-    "start": "beefy --open example/example.js -- --transform glslify"
+    "start": "beefy example/example.js -- --transform glslify"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/stackgl/gl-fbo.git"
+    "url": "git://github.com/lfdoherty/gl-fbo.git"
   },
   "keywords": [
     "fbo",

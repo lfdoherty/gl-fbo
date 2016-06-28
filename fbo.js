@@ -1,6 +1,6 @@
 'use strict'
 
-var createTexture = require('gl-texture2d')
+var createTexture = require('@lfdoherty/gl-texture2d')
 
 module.exports = createFBO
 
@@ -134,7 +134,7 @@ function rebuildFBO(fbo) {
   }
 
   //Check frame buffer state
-  var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER)
+ /* var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER)
   if(status !== gl.FRAMEBUFFER_COMPLETE) {
 
     //Release all partially allocated resources
@@ -165,7 +165,7 @@ function rebuildFBO(fbo) {
 
     //Throw the frame buffer error
     throwFBOError(status)
-  }
+  }*/
 
   //Everything ok, let's get on with life
   restoreFBOState(gl, state)
@@ -372,6 +372,18 @@ proto.dispose = function() {
     gl.deleteRenderbuffer(this._color_rb)
     this._color_rb = null
   }
+}
+
+proto.readData = function(into){
+  if(!into){
+   if(this._colorType === this.gl.FLOAT){
+    into = new Float32Array(this._shape[0] * this._shape[1] * 4);
+   } else{
+    into = new Uint8Array(this._shape[0] * this._shape[1] * 4);
+   }
+  }
+  this.gl.readPixels(0, 0, this._shape[0], this._shape[1], this.gl.RGBA, this._colorType, into);
+  return into;
 }
 
 function createFBO(gl, width, height, options) {
